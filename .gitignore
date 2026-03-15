@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+venv/
+env/
+ENV/
+.env
+*.db
+*.sqlite3
+.DS_Store
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Project specific
+users.db
+data/*.csv   # if you don't want to commit large CSV files
+!data/.gitkeep   # optionally keep the folder
+
+# Uploads (if any)
+uploads/

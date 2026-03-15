@@ -1,0 +1,38 @@
+async function analyze() {
+    const resumeFile = document.getElementById("resumeFile").files[0];
+    const jobFile = document.getElementById("jobFile").files[0];
+    const scoreElement = document.getElementById("score");
+    const skillsElement = document.getElementById("skills");
+    const statusElement = document.getElementById("status-message");
+
+    if (!resumeFile || !jobFile) {
+        alert("Please upload both files.");
+        return;
+    }
+
+    statusElement.innerText = "Analyzing... please wait.";
+    
+    let formData = new FormData();
+    formData.append("resume", resumeFile);
+    formData.append("job", jobFile);
+
+    try {
+        const response = await fetch("http://127.0.0.1:5000/analyze", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        // Update the HTML with real data from FastAPI
+        scoreElement.innerText = data.match_score + "%";
+        skillsElement.innerText = data.missing_skills.join(", ");
+        statusElement.innerText = "Analysis Complete!";
+        statusElement.style.color = "green";
+
+    } catch (error) {
+        console.error("Error:", error);
+        statusElement.innerText = "Error: Could not connect to backend.";
+        statusElement.style.color = "red";
+    }
+}

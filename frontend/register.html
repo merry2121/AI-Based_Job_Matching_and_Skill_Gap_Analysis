@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - AI Matcher</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Create Account</h2>
+        <input type="text" id="regUser" placeholder="Full Name" required><br><br>
+        <select id="userRole">
+            <option value="seeker">Job Seeker</option>
+            <option value="employer">Employer</option>
+        </select><br><br>
+        <button onclick="register()">Sign Up</button>
+    </div>
+    <script>
+        function register() {
+            const role = document.getElementById("userRole").value;
+            const name = document.getElementById("regUser").value;
+            if(!name) { alert("Please enter your name"); return; }
+            localStorage.setItem("userRole", role);
+            localStorage.setItem("userName", name);
+            alert("Account created as " + role);
+            window.location.href = "login.html";
+        }
+    </script>
+</body>
+</html>

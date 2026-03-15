@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Job Matching & Skill Gap Analysis</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>AI-Based Job Matching</h1>
+        <p>Ethiopian Institute of Technology – Mekelle</p>
+        <hr>
+
+        <div class="upload-section">
+            <h3>Step 1: Upload Your Documents</h3>
+            
+            <label for="resumeFile">Resume (CV):</label>
+            <input type="file" id="resumeFile" accept=".pdf">
+
+            <br><br>
+
+            <label for="jobFile">Job Description:</label>
+            <input type="file" id="jobFile" accept=".pdf">
+
+            <br><br>
+
+            <button onclick="analyze()">Analyze Skills</button>
+        </div>
+
+        <hr>
+
+        <div id="results-section">
+            <h3>Results:</h3>
+            <p id="status-message"></p>
+            <p><strong>Match Score:</strong> <span id="score">-</span></p>
+            <p><strong>Missing Skills:</strong> <span id="skills">-</span></p>
+            <p><strong>Recommendations:</strong> <span id="recommendations">-</span></p>
+        </div>
+    </div>
+            <h4>Recommended Courses:</h4>
+<ul id="course-links"></ul>
+
+<h4>Top 5 Relevant Jobs:</h4>
+<ul id="job-suggestions">
+    <li>Machine Learning Engineer - Ethio Telecom</li>
+    <li>Data Scientist - CBE</li>
+    <li>Software Developer - Mekelle Tech</li>
+    <li>AI Researcher - Mekelle University</li>
+    <li>Junior Analyst - Safaricom</li>
+</ul>
+    <script src="script.js"></script>
+</body>
+</html>
