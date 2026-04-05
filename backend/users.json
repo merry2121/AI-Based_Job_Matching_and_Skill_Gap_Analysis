@@ -1,0 +1,14 @@
+{
+  "admin": {
+    "password": "admin123",
+    "role": "admin",
+    "full_name": "Administrator",
+    "email": "admin@example.com"
+  },
+  "mandow21": {
+    "password": "Manman@21",
+    "role": "seeker",
+    "full_name": "Man Down",
+    "email": "mandown@gmail.com"
+  }
+}

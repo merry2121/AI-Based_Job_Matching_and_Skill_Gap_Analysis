@@ -1,178 +1,382 @@
+EMPLOYER_HTML = """
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employer Dashboard - AI Job Matcher</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>SkillMatch AI - Employer Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f0f2f5; }
+        
+        .top-nav {
+            background: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f8fafc;
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
-        .navbar {
-            max-width: 1200px;
-            margin: 0 auto 40px;
+        .logo { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { text-decoration: none; color: #4a5568; font-weight: 500; }
+        .user-menu { display: flex; align-items: center; gap: 20px; }
+        .user-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
+        .logout-btn { background: none; border: none; color: #ef4444; cursor: pointer; font-weight: 500; }
+        
+        .hero-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 20px 40px;
+            border-radius: 20px;
+            padding: 30px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1e293b;
+        .hero-banner h2 { color: white; font-size: 1.5rem; margin-bottom: 10px; }
+        .hero-banner p { color: rgba(255,255,255,0.9); }
+        .hero-banner button { background: white; border: none; padding: 10px 25px; border-radius: 40px; font-weight: 600; color: #667eea; cursor: pointer; }
+        
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 30px;
+            margin: 20px 40px;
         }
-        .navbar-user {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .navbar-user span {
-            color: #334155;
-            font-weight: 500;
-        }
-        .btn-logout {
-            padding: 8px 16px;
-            background: #1e293b;
-            color: white;
-            border-radius: 40px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-        .btn-logout:hover {
-            background: #0f172a;
-        }
-        .card {
+        
+        .content-card {
             background: white;
-            border-radius: 32px;
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px;
-        }
-        h2 {
-            font-size: 2rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 24px;
-        }
-        .form-group {
-            margin-bottom: 24px;
-        }
-        label {
-            display: block;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 8px;
-        }
-        .file-input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid #e2e8f0;
-            border-radius: 40px;
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
-            background: white;
-        }
-        .btn {
-            padding: 14px 32px;
-            background: #1e293b;
-            color: white;
-            border: none;
-            border-radius: 40px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .btn:hover {
-            background: #0f172a;
-        }
-        .status {
-            margin-top: 20px;
-            padding: 12px 16px;
-            border-radius: 40px;
-            font-size: 0.95rem;
-        }
-        .status.info {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 40px;
-        }
-        th {
-            text-align: left;
-            padding: 16px;
-            background: #f1f5f9;
-            color: #1e293b;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        td {
-            padding: 16px;
-            border-bottom: 1px solid #e2e8f0;
-            color: #334155;
-        }
-        .badge {
-            background: #e2e8f0;
-            padding: 4px 8px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            margin-right: 4px;
-            display: inline-block;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
+        
+        .sidebar-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .sidebar-card h3 { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #667eea; display: inline-block; }
+        
+        .premium-widget { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); text-align: center; }
+        
+        .tabs { display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
+        .tab { padding: 8px 20px; border-radius: 30px; cursor: pointer; font-weight: 600; color: #64748b; transition: all 0.3s; }
+        .tab.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        
+        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: #f8fafc; border-radius: 16px; padding: 15px; text-align: center; border: 1px solid #e2e8f0; }
+        .stat-number { font-size: 1.8rem; font-weight: 800; color: #667eea; }
+        
+        .upload-area { border: 2px dashed #cbd5e1; border-radius: 16px; padding: 40px; text-align: center; cursor: pointer; background: #f8fafc; margin-bottom: 25px; }
+        .upload-area:hover { border-color: #667eea; background: #f1f5f9; }
+        
+        .job-card, .candidate-card { background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; margin-bottom: 15px; transition: all 0.3s; }
+        .job-card:hover, .candidate-card:hover { box-shadow: 0 10px 25px rgba(0,0,0,0.1); transform: translateX(5px); }
+        .match-badge { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 4px 12px; border-radius: 30px; font-size: 12px; display: inline-block; }
+        
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 10px 24px; border-radius: 40px; cursor: pointer; font-weight: 600; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+        .btn-outline { background: transparent; border: 1px solid #e2e8f0; padding: 8px 20px; border-radius: 40px; cursor: pointer; }
+        .btn-outline:hover { background: #f1f5f9; }
+        
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #1e293b; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; }
+        .row-2 { display: flex; gap: 20px; }
+        .row-2 > div { flex: 1; }
+        
+        .company-badge { display: inline-block; background: #f1f5f9; padding: 6px 12px; border-radius: 30px; margin: 5px; font-size: 12px; }
+        .message-badge { background: #ef4444; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; margin-left: 8px; }
+        
+        input[type="file"] { display: none; }
+        .loading { display: none; text-align: center; padding: 40px; }
+        .spinner { border: 4px solid #e2e8f0; border-top: 4px solid #667eea; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; border-radius: 20px; padding: 30px; max-width: 500px; width: 90%; text-align: center; }
+        .message-input { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; margin-top: 10px; }
+        
+        @media (max-width: 1024px) { .main-layout { grid-template-columns: 1fr; margin: 20px; } .hero-banner { margin: 20px; } .top-nav { padding: 15px 20px; } .nav-links { display: none; } }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="navbar-brand">AI Job Matcher</div>
-        <div class="navbar-user">
-            <span>Welcome, {{ user.username }}</span>
-            <a href="/logout" class="btn-logout">Logout</a>
+    <div class="top-nav">
+        <div class="logo"><i class="fas fa-brain"></i> SkillMatch AI</div>
+        <div class="nav-links">
+            <a href="#">Dashboard</a>
+            <a href="#">Post Job</a>
+            <a href="#">Candidates</a>
+        </div>
+        <div class="user-menu">
+            <div class="user-avatar" id="userAvatar"></div>
+            <span id="username" style="font-weight: 500;"></span>
+            <button class="logout-btn" onclick="showLogoutConfirm()"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </div>
     </div>
-
-    <div class="card">
-        <h2>Find Candidates</h2>
-        <form id="uploadForm">
-            <div class="form-group">
-                <label for="jobFile">Job Description (PDF)</label>
-                <input type="file" id="jobFile" accept=".pdf" required class="file-input">
+    
+    <div class="hero-banner">
+        <div>
+            <h2><i class="fas fa-rocket"></i> Post a Job for Only 50 ETB</h2>
+            <p>Get matched with top Ethiopian talent using AI technology</p>
+        </div>
+        <button onclick="showTab('post')">Post a Job Now →</button>
+    </div>
+    
+    <div class="main-layout">
+        <div class="content-card">
+            <div class="tabs">
+                <div class="tab active" onclick="showTab('dashboard')">📊 Dashboard</div>
+                <div class="tab" onclick="showTab('post')">📝 Post a Job</div>
+                <div class="tab" onclick="showTab('history')">💰 Payment History</div>
+                <div class="tab" onclick="showTab('messages')">💬 Messages <span id="tabBadge" class="message-badge" style="display:none;">0</span></div>
             </div>
-            <button type="button" id="matchBtn" class="btn">Find Matching Candidates</button>
-        </form>
-
-        <div id="status" class="status" style="display: none;"></div>
-
-        <div id="results" style="display: none;">
-            <h3 style="margin: 40px 0 20px; color: #1e293b;">Top 5 Ranked Candidates</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Candidate</th>
-                        <th>Match Score</th>
-                        <th>Missing Skills</th>
-                    </tr>
-                </thead>
-                <tbody id="resultsBody"></tbody>
-            </table>
+            
+            <div class="stats-row">
+                <div class="stat-card"><div class="stat-number" id="jobCount">0</div><div>Active Jobs</div></div>
+                <div class="stat-card"><div class="stat-number" id="candidateCount">0</div><div>Candidates</div></div>
+                <div class="stat-card"><div class="stat-number" id="messageCount">0</div><div>Messages</div></div>
+            </div>
+            
+            <div id="dashboardContent">
+                <div class="upload-area" onclick="document.getElementById('jobFile').click()" style="cursor:pointer;">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: #667eea;"></i>
+                    <h3 style="margin: 10px 0;">Upload Job Description</h3>
+                    <p style="color: #64748b;">Click to upload a job description (PDF) or fill the form</p>
+                    <input type="file" id="jobFile" accept=".pdf" onchange="uploadJobPDF()">
+                </div>
+                <div id="results"></div>
+            </div>
+            
+            <div id="postContent" style="display:none;">
+                <div class="upload-area">
+                    <h3>Post a New Job - 50 ETB</h3>
+                    <form id="postJobForm">
+                        <div class="form-group"><label>Job Title</label><input type="text" id="title" required></div>
+                        <div class="row-2"><div class="form-group"><label>Location</label><input type="text" id="location" required></div>
+                        <div class="form-group"><label>Salary Range</label><input type="text" id="salary"></div></div>
+                        <div class="form-group"><label>Job Description</label><textarea id="description" rows="4" required></textarea></div>
+                        <div class="form-group"><label>Required Skills</label><input type="text" id="skills" placeholder="Python, JavaScript, SQL" required></div>
+                        <button type="submit" class="btn-primary">💳 Pay 50 ETB & Post Job</button>
+                    </form>
+                </div>
+                <div id="candidatesResults"></div>
+            </div>
+            
+            <div id="historyContent" style="display:none;"><div id="paymentsList"></div></div>
+            <div id="messagesContent" style="display:none;"><div id="messagesList"></div></div>
+        </div>
+        
+        <div>
+            <div class="sidebar-card premium-widget">
+                <i class="fas fa-gem" style="font-size: 32px; color: #f59e0b;"></i>
+                <h3>Enterprise Plan</h3>
+                <div class="premium-price">499 ETB<span style="font-size: 14px;">/month</span></div>
+                <ul style="list-style: none; margin: 15px 0; text-align: left;">
+                    <li><i class="fas fa-check-circle" style="color: #10b981;"></i> Unlimited job posts</li>
+                    <li><i class="fas fa-check-circle" style="color: #10b981;"></i> Priority matching</li>
+                    <li><i class="fas fa-check-circle" style="color: #10b981;"></i> Dedicated support</li>
+                </ul>
+                <button class="btn-primary" style="width: 100%;" onclick="alert('Contact sales@skillmatch.com')">Contact Sales</button>
+            </div>
+            
+            <div class="sidebar-card">
+                <h3><i class="fas fa-trophy"></i> Top Employers</h3>
+                <div>
+                    <span class="company-badge">Google</span>
+                    <span class="company-badge">Microsoft</span>
+                    <span class="company-badge">Amazon</span>
+                    <span class="company-badge">Ethio Telecom</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-card">
+                <h3><i class="fas fa-chart-line"></i> Hiring Tips</h3>
+                <ul style="list-style: none;">
+                    <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: #10b981;"></i> Write clear job descriptions</li>
+                    <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: #10b981;"></i> Respond to candidates quickly</li>
+                    <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: #10b981;"></i> Offer competitive salaries</li>
+                </ul>
+            </div>
         </div>
     </div>
-
-    <script src="/static/employer_script.js"></script>
+    
+    <div id="confirmModal" style="display:none;" class="modal">
+        <div class="modal-content">
+            <h3>Confirm Logout</h3>
+            <p>Are you sure you want to logout?</p>
+            <button class="btn-primary" onclick="logout()">Yes, Logout</button>
+            <button class="btn-outline" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentUser = '{{ username }}';
+        document.getElementById('username').innerText = currentUser;
+        document.getElementById('userAvatar').innerText = currentUser.charAt(0).toUpperCase();
+        
+        function showLogoutConfirm() { document.getElementById('confirmModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('confirmModal').style.display = 'none'; }
+        function logout() { window.location.href = '/logout'; }
+        
+        function showTab(tabName) {
+            document.getElementById('dashboardContent').style.display = 'none';
+            document.getElementById('postContent').style.display = 'none';
+            document.getElementById('historyContent').style.display = 'none';
+            document.getElementById('messagesContent').style.display = 'none';
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            if (tabName === 'dashboard') { document.getElementById('dashboardContent').style.display = 'block'; event.target.classList.add('active'); }
+            else if (tabName === 'post') { document.getElementById('postContent').style.display = 'block'; event.target.classList.add('active'); }
+            else if (tabName === 'history') { document.getElementById('historyContent').style.display = 'block'; event.target.classList.add('active'); loadPayments(); }
+            else if (tabName === 'messages') { document.getElementById('messagesContent').style.display = 'block'; event.target.classList.add('active'); loadMessages(); }
+        }
+        
+        async function uploadJobPDF() {
+            const file = document.getElementById('jobFile').files[0];
+            if (!file) return;
+            const fd = new FormData();
+            fd.append('job_desc', file);
+            const res = await fetch('/match-job-description', { method: 'POST', body: fd });
+            const data = await res.json();
+            displayCandidates(data.candidates);
+        }
+        
+        document.getElementById('postJobForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fd = new FormData();
+            fd.append('title', document.getElementById('title').value);
+            fd.append('location', document.getElementById('location').value);
+            fd.append('description', document.getElementById('description').value);
+            fd.append('skills', document.getElementById('skills').value);
+            fd.append('salary', document.getElementById('salary').value);
+            const res = await fetch('/post-job-and-match', { method: 'POST', body: fd });
+            const data = await res.json();
+            if (data.success) {
+                alert('✅ Payment successful! Job posted.');
+                displayCandidates(data.candidates);
+                loadPayments();
+            } else {
+                alert('Error: ' + data.error);
+            }
+        });
+        
+        function displayCandidates(candidates) {
+            document.getElementById('candidateCount').innerText = candidates ? candidates.length : 0;
+            const container = document.getElementById('candidatesResults');
+            if (!candidates || candidates.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px;"><p>No matching candidates found.</p></div>';
+            } else {
+                let html = '<h3 style="margin-bottom: 20px;">🎯 Top Matching Candidates</h3>';
+                candidates.forEach((c, i) => {
+                    html += `<div class="candidate-card">
+                        <h3>${i+1}. ${c.name}</h3>
+                        <p><strong>Experience:</strong> ${c.experience}</p>
+                        <p><strong>Education:</strong> ${c.education}</p>
+                        <p><strong>Email:</strong> ${c.email}</p>
+                        <span class="match-badge">${c.match_score}% Match</span>
+                        <p style="margin-top: 12px;"><i class="fas fa-code"></i> Skills: ${c.skills}</p>
+                        <button class="btn-primary" style="margin-top: 10px;" onclick="contactCandidate(${c.id}, '${c.name}', '${c.email}')"><i class="fas fa-envelope"></i> Contact Candidate</button>
+                    </div>`;
+                });
+                container.innerHTML = html;
+            }
+        }
+        
+        async function contactCandidate(id, name, email) {
+            const message = prompt(`Send message to ${name} (${email}):`);
+            if (message && message.trim()) {
+                const fd = new FormData();
+                fd.append('candidate_id', id);
+                fd.append('candidate_name', name);
+                fd.append('candidate_email', email);
+                fd.append('message', message);
+                await fetch('/send-message', { method: 'POST', body: fd });
+                alert(`✅ Message sent to ${name}!`);
+                loadMessages();
+            }
+        }
+        
+        async function loadPayments() {
+            const res = await fetch('/get-payments');
+            const data = await res.json();
+            const container = document.getElementById('paymentsList');
+            if (data.payments.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px;"><p>No payments yet.</p></div>';
+            } else {
+                let html = '<h3>Payment History</h3><table style="width:100%; border-collapse: collapse;"><tr style="background:#f1f5f9;"><th style="padding: 10px; text-align: left;">Amount</th><th>Type</th><th>Status</th><th>Date</th></tr>';
+                data.payments.forEach(p => {
+                    html += `<tr><td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">${p.amount} ETB</td><td style="padding: 10px;">${p.type}</td><td style="padding: 10px;">${p.status}</td><td style="padding: 10px;">${p.date}</td></tr>`;
+                });
+                html += '</table>';
+                container.innerHTML = html;
+            }
+        }
+        
+        async function loadMessages() {
+            const res = await fetch('/get-messages');
+            const data = await res.json();
+            const newMessages = data.messages.filter(m => m.to_name === currentUser).length;
+            document.getElementById('messageCount').innerText = newMessages;
+            const tabBadge = document.getElementById('tabBadge');
+            if (newMessages > 0) {
+                tabBadge.style.display = 'inline-flex';
+                tabBadge.innerText = newMessages;
+            } else {
+                tabBadge.style.display = 'none';
+            }
+            
+            const container = document.getElementById('messagesList');
+            if (data.messages.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px;"><p>No messages yet.</p></div>';
+            } else {
+                let html = '';
+                const grouped = {};
+                data.messages.forEach(msg => {
+                    if (!grouped[msg.conversation_id]) grouped[msg.conversation_id] = [];
+                    grouped[msg.conversation_id].push(msg);
+                });
+                for (let convId in grouped) {
+                    const msgs = grouped[convId];
+                    const otherUser = msgs[0].from_name === currentUser ? msgs[0].to_name : msgs[0].from_name;
+                    html += `<div class="candidate-card">
+                        <h3><i class="fas fa-user-circle"></i> ${otherUser}</h3>`;
+                    msgs.forEach(msg => {
+                        const isMe = msg.from_name === currentUser;
+                        html += `<div style="margin-top:10px; padding:10px; background:${isMe ? '#e2e8f0' : '#f8fafc'}; border-radius:8px;">
+                            <strong>${isMe ? 'You' : msg.from_name}:</strong> ${msg.message}
+                            <div style="font-size:11px; color:#94a3b8;">${msg.created_at}</div>
+                        </div>`;
+                    });
+                    html += `<textarea id="reply_${convId}" class="message-input" placeholder="Type your reply..."></textarea>
+                    <button class="btn-primary" style="margin-top:10px;" onclick="sendReply('${convId}', '${otherUser}')"><i class="fas fa-paper-plane"></i> Send Reply</button>
+                    </div>`;
+                }
+                container.innerHTML = html;
+            }
+        }
+        
+        async function sendReply(conversationId, toUser) {
+            const msgBox = document.getElementById(`reply_${conversationId}`);
+            const message = msgBox.value;
+            if (!message.trim()) return;
+            const fd = new FormData();
+            fd.append('to_user', toUser);
+            fd.append('message', message);
+            fd.append('conversation_id', conversationId);
+            await fetch('/send-reply', { method: 'POST', body: fd });
+            msgBox.value = '';
+            loadMessages();
+        }
+        
+        loadPayments();
+        loadMessages();
+    </script>
 </body>
 </html>
+"""

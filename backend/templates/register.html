@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - AI Job Matcher</title>
+    <title>Register - AI Job Matching</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -13,144 +13,111 @@
         }
         body {
             font-family: 'Inter', sans-serif;
-            background: #f8fafc;
+            background: white;
             min-height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             padding: 20px;
         }
-        .card {
+        .register-container {
             background: white;
-            border-radius: 32px;
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
-            max-width: 480px;
-            width: 100%;
-            padding: 48px 40px;
+            border-radius: 20px;
+            padding: 40px;
+            width: 450px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
         }
         h2 {
-            font-size: 2rem;
-            font-weight: 600;
+            text-align: center;
             color: #1e293b;
-            margin-bottom: 32px;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
         }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 8px;
-        }
-        input, select {
+        input {
             width: 100%;
-            padding: 14px 16px;
+            padding: 12px 16px;
+            margin: 10px 0;
             border: 1px solid #e2e8f0;
-            border-radius: 40px;
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
-            transition: border-color 0.2s;
+            border-radius: 8px;
+            font-size: 14px;
         }
         input:focus {
             outline: none;
-            border-color: #1e293b;
+            border-color: #667eea;
         }
         .radio-group {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            margin-top: 8px;
+            margin: 15px 0;
         }
-        .radio-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .radio-group label {
+            margin-right: 20px;
+            cursor: pointer;
         }
-        .radio-option input[type="radio"] {
+        .radio-group input {
             width: auto;
-            margin: 0;
+            margin-right: 5px;
         }
-        .btn {
+        button {
             width: 100%;
-            padding: 14px 16px;
+            padding: 12px;
             background: #1e293b;
             color: white;
             border: none;
             border-radius: 40px;
-            font-size: 1rem;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
-            margin-top: 8px;
+            margin-top: 20px;
         }
-        .btn:hover {
+        button:hover {
             background: #0f172a;
         }
-        .hint {
-            font-size: 0.85rem;
-            color: #64748b;
-            margin-top: 6px;
-        }
         .links {
-            margin-top: 24px;
             text-align: center;
+            margin-top: 20px;
         }
         .links a {
-            color: #1e293b;
+            color: #667eea;
             text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
+            font-size: 14px;
         }
-        .links a:hover {
-            text-decoration: underline;
+        .hint {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: -5px;
+            margin-bottom: 10px;
         }
-        .alert {
-            padding: 12px 16px;
-            border-radius: 40px;
-            margin-bottom: 24px;
-            font-size: 0.95rem;
-        }
-        .alert-danger {
-            background: #fce4e4;
-            color: #c62828;
-            border: 1px solid #f5c6cb;
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
-    <div class="card">
+    <div class="register-container">
         <h2>Create Account</h2>
         {% if error %}
-            <div class="alert alert-danger">{{ error }}</div>
+        <div class="error">{{ error }}</div>
         {% endif %}
-        <form method="post" action="/register">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+        <form method="post" action="/register" autocomplete="off">
+            <input type="text" name="full_name" placeholder="Full Name / Company Name" required autocomplete="off">
+            <input type="text" name="username" placeholder="Username" required autocomplete="off">
+            <input type="email" name="email" placeholder="Email" required autocomplete="off">
+            <input type="password" name="password" placeholder="Password" required autocomplete="new-password">
+            <div class="hint">8-20 chars, with uppercase, lowercase, digit</div>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="role" value="seeker" checked> Job Seeker
+                </label>
+                <label>
+                    <input type="radio" name="role" value="employer"> Employer
+                </label>
             </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-                <div class="hint">8-20 chars, with uppercase, lowercase, digit, special</div>
-            </div>
-            <div class="form-group">
-                <label>I am a:</label>
-                <div class="radio-group">
-                    <label class="radio-option">
-                        <input type="radio" name="role" value="seeker" checked> Job Seeker
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="role" value="employer"> Employer
-                    </label>
-                </div>
-            </div>
-            <button type="submit" class="btn">Register</button>
+            <button type="submit">Create Account</button>
         </form>
         <div class="links">
             <a href="/login">Already have an account? Login here</a>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - AI Job Matcher</title>
+    <title>Login - AI Job Matching</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -13,124 +13,99 @@
         }
         body {
             font-family: 'Inter', sans-serif;
-            background: #f8fafc;
+            background: white;
             min-height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             padding: 20px;
         }
-        .card {
+        .login-container {
             background: white;
-            border-radius: 32px;
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
-            max-width: 440px;
-            width: 100%;
-            padding: 48px 40px;
+            border-radius: 20px;
+            padding: 40px;
+            width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
         }
         h2 {
-            font-size: 2rem;
-            font-weight: 600;
+            text-align: center;
             color: #1e293b;
-            margin-bottom: 32px;
-        }
-        .form-group {
-            margin-bottom: 24px;
-        }
-        label {
-            display: block;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 8px;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
         }
         input {
             width: 100%;
-            padding: 14px 16px;
+            padding: 12px 16px;
+            margin: 10px 0;
             border: 1px solid #e2e8f0;
-            border-radius: 40px;
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
-            transition: border-color 0.2s;
+            border-radius: 8px;
+            font-size: 14px;
         }
         input:focus {
             outline: none;
-            border-color: #1e293b;
+            border-color: #667eea;
         }
-        .btn {
+        button {
             width: 100%;
-            padding: 14px 16px;
+            padding: 12px;
             background: #1e293b;
             color: white;
             border: none;
             border-radius: 40px;
-            font-size: 1rem;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            margin-top: 20px;
         }
-        .btn:hover {
+        button:hover {
             background: #0f172a;
         }
         .links {
-            margin-top: 24px;
             text-align: center;
+            margin-top: 20px;
         }
         .links a {
-            color: #1e293b;
+            color: #667eea;
             text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
+            font-size: 14px;
         }
         .links a:hover {
             text-decoration: underline;
         }
-        .alert {
-            padding: 12px 16px;
-            border-radius: 40px;
-            margin-bottom: 24px;
-            font-size: 0.95rem;
+        .message {
+            text-align: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
         }
-        .alert-success {
-            background: #dff0d8;
-            color: #2e7d32;
-            border: 1px solid #c8e6c9;
+        .success {
+            background: #d1fae5;
+            color: #065f46;
         }
-        .alert-danger {
-            background: #fce4e4;
-            color: #c62828;
-            border: 1px solid #f5c6cb;
-        }
-        .alert-info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2>Welcome Back</h2>
-        {% if message %}
-            <div class="alert alert-success">{{ message }}</div>
+    <div class="login-container">
+        <h2>Sign In</h2>
+        {% if registered == 'success' %}
+        <div class="message success">Registration successful! Please login.</div>
         {% endif %}
         {% if error %}
-            <div class="alert alert-danger">{{ error }}</div>
+        <div class="message error">{{ error }}</div>
         {% endif %}
-        <form method="post" action="/login">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn">Login</button>
+        <form method="post" action="/login" autocomplete="off">
+            <input type="text" name="username" placeholder="Username" required autocomplete="off">
+            <input type="password" name="password" placeholder="Password" required autocomplete="new-password">
+            <button type="submit">Sign In</button>
         </form>
         <div class="links">
             <a href="/forgot-password">Forgot password?</a><br>
-            <a href="/register">Don't have an account? Register here</a>
+            <a href="/register">Don't have an account? Create Account</a>
         </div>
     </div>
 </body>

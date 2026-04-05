@@ -1,0 +1,231 @@
+ADMIN_HTML = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SkillMatch AI - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f0f2f5; }
+        
+        .top-nav {
+            background: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .user-menu { display: flex; align-items: center; gap: 20px; }
+        .user-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
+        .logout-btn { background: none; border: none; color: #ef4444; cursor: pointer; font-weight: 500; }
+        
+        .hero-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 20px 40px;
+            border-radius: 20px;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .hero-banner h2 { color: white; font-size: 1.5rem; margin-bottom: 10px; }
+        .hero-banner p { color: rgba(255,255,255,0.9); }
+        
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 30px;
+            margin: 20px 40px;
+        }
+        
+        .content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .sidebar-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .sidebar-card h3 { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #667eea; display: inline-block; }
+        
+        .tabs { display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
+        .tab { padding: 8px 20px; border-radius: 30px; cursor: pointer; font-weight: 600; color: #64748b; transition: all 0.3s; }
+        .tab.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: #f8fafc; border-radius: 16px; padding: 15px; text-align: center; border: 1px solid #e2e8f0; }
+        .stat-number { font-size: 1.8rem; font-weight: 800; color: #667eea; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f8fafc; font-weight: 600; color: #1e293b; }
+        .delete-btn { background: #ef4444; color: white; border: none; padding: 5px 12px; border-radius: 5px; cursor: pointer; }
+        
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 10px 24px; border-radius: 40px; cursor: pointer; font-weight: 600; }
+        .btn-outline { background: transparent; border: 1px solid #e2e8f0; padding: 8px 20px; border-radius: 40px; cursor: pointer; }
+        
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: white; border-radius: 20px; padding: 30px; max-width: 500px; width: 90%; text-align: center; }
+        
+        @media (max-width: 1024px) { .main-layout { grid-template-columns: 1fr; margin: 20px; } .hero-banner { margin: 20px; } .top-nav { padding: 15px 20px; } }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="logo"><i class="fas fa-brain"></i> SkillMatch AI Admin</div>
+        <div class="user-menu">
+            <div class="user-avatar" id="userAvatar"></div>
+            <span id="username" style="font-weight: 500;"></span>
+            <button class="logout-btn" onclick="showLogoutConfirm()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </div>
+    
+    <div class="hero-banner">
+        <div>
+            <h2><i class="fas fa-shield-alt"></i> Admin Control Panel</h2>
+            <p>Manage users, monitor applications, and oversee platform activity</p>
+        </div>
+    </div>
+    
+    <div class="main-layout">
+        <div class="content-card">
+            <div class="tabs">
+                <div class="tab active" onclick="showTab('users')">👥 Users</div>
+                <div class="tab" onclick="showTab('applications')">📋 Applications</div>
+                <div class="tab" onclick="showTab('payments')">💰 Payments</div>
+                <div class="tab" onclick="showTab('messages')">💬 Messages</div>
+            </div>
+            
+            <div class="stats-row">
+                <div class="stat-card"><div class="stat-number" id="totalUsers">0</div><div>Total Users</div></div>
+                <div class="stat-card"><div class="stat-number" id="totalApps">0</div><div>Applications</div></div>
+                <div class="stat-card"><div class="stat-number" id="totalRevenue">0</div><div>Revenue (ETB)</div></div>
+                <div class="stat-card"><div class="stat-number" id="totalMessages">0</div><div>Messages</div></div>
+            </div>
+            
+            <div id="usersContent"><table id="usersTable"><thead><tr><th>Username</th><th>Role</th><th>Full Name</th><th>Email</th><th>Action</th></tr></thead><tbody id="usersBody"></tbody></table></div>
+            <div id="applicationsContent" style="display:none;"><table id="appsTable"><thead><tr><th>Job Title</th><th>Candidate</th><th>Match Score</th><th>Status</th><th>Date</th></tr></thead><tbody id="appsBody"></tbody></table></div>
+            <div id="paymentsContent" style="display:none;"><table id="paymentsTable"><thead><tr><th>User</th><th>Amount</th><th>Type</th><th>Status</th><th>Date</th></tr></thead><tbody id="paymentsBody"></tbody></table></div>
+            <div id="messagesContent" style="display:none;"><table id="msgsTable"><thead><tr><th>From</th><th>To</th><th>Message</th><th>Date</th></tr></thead><tbody id="msgsBody"></tbody></table></div>
+        </div>
+        
+        <div>
+            <div class="sidebar-card">
+                <h3><i class="fas fa-chart-line"></i> Platform Stats</h3>
+                <ul style="list-style: none;">
+                    <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: #10b981;"></i> Active Job Seekers: <span id="activeSeekers">0</span></li>
+                    <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: #10b981;"></i> Active Employers: <span id="activeEmployers">0</span></li>
+                    <li style="margin-bottom: 10px;"><i class="fas fa-check-circle" style="color: #10b981;"></i> Jobs Posted: <span id="totalJobs">0</span></li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-card">
+                <h3><i class="fas fa-bell"></i> Recent Activity</h3>
+                <div id="recentActivity"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="confirmModal" style="display:none;" class="modal">
+        <div class="modal-content">
+            <h3>Confirm Logout</h3>
+            <p>Are you sure you want to logout?</p>
+            <button class="btn-primary" onclick="logout()">Yes, Logout</button>
+            <button class="btn-outline" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentUser = '{{ username }}';
+        document.getElementById('username').innerText = currentUser;
+        document.getElementById('userAvatar').innerText = currentUser.charAt(0).toUpperCase();
+        
+        function showLogoutConfirm() { document.getElementById('confirmModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('confirmModal').style.display = 'none'; }
+        function logout() { window.location.href = '/logout'; }
+        
+        function showTab(tabName) {
+            document.getElementById('usersContent').style.display = 'none';
+            document.getElementById('applicationsContent').style.display = 'none';
+            document.getElementById('paymentsContent').style.display = 'none';
+            document.getElementById('messagesContent').style.display = 'none';
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            if (tabName === 'users') { document.getElementById('usersContent').style.display = 'block'; event.target.classList.add('active'); }
+            else if (tabName === 'applications') { document.getElementById('applicationsContent').style.display = 'block'; event.target.classList.add('active'); loadApplications(); }
+            else if (tabName === 'payments') { document.getElementById('paymentsContent').style.display = 'block'; event.target.classList.add('active'); loadPayments(); }
+            else if (tabName === 'messages') { document.getElementById('messagesContent').style.display = 'block'; event.target.classList.add('active'); loadMessages(); }
+        }
+        
+        async function loadUsers() {
+            const res = await fetch('/admin/users');
+            const users = await res.json();
+            document.getElementById('totalUsers').innerText = users.length;
+            let seekers = 0, employers = 0;
+            const body = document.getElementById('usersBody');
+            body.innerHTML = '';
+            users.forEach(u => {
+                if (u.role === 'seeker') seekers++;
+                if (u.role === 'employer') employers++;
+                body.innerHTML += `<tr><td>${u.username}</td><td>${u.role}</td><td>${u.full_name || '-'}</td><td>${u.email || '-'}</td>
+                <td>${u.username !== 'admin' ? `<button class="delete-btn" onclick="del('${u.username}')">Delete</button>` : 'Admin'}</td></tr>`;
+            });
+            document.getElementById('activeSeekers').innerText = seekers;
+            document.getElementById('activeEmployers').innerText = employers;
+        }
+        
+        async function del(username) { if(confirm('Delete this user?')) { await fetch(`/admin/delete-user/${username}`, { method: 'POST' }); loadUsers(); } }
+        
+        async function loadApplications() {
+            const res = await fetch('/admin/applications');
+            const apps = await res.json();
+            document.getElementById('totalApps').innerText = apps.length;
+            const body = document.getElementById('appsBody');
+            body.innerHTML = '';
+            apps.forEach(app => { body.innerHTML += `<tr><td>${app.job_title}</td><td>${app.candidate_name}</td><td>${app.match_score}%</td><td>${app.status}</td><td>${app.applied_at || ''}</td></tr>`; });
+        }
+        
+        async function loadPayments() {
+            const res = await fetch('/admin/payments');
+            const payments = await res.json();
+            let total = 0;
+            payments.forEach(p => total += p.amount);
+            document.getElementById('totalRevenue').innerText = total;
+            document.getElementById('totalJobs').innerText = payments.length;
+            const body = document.getElementById('paymentsBody');
+            body.innerHTML = '';
+            payments.forEach(p => { body.innerHTML += `<tr><td>${p.user}</td><td>${p.amount} ETB</td><td>${p.type}</td><td>${p.status}</td><td>${p.date}</td></tr>`; });
+        }
+        
+        async function loadMessages() {
+            const res = await fetch('/admin/messages');
+            const msgs = await res.json();
+            document.getElementById('totalMessages').innerText = msgs.length;
+            const body = document.getElementById('msgsBody');
+            body.innerHTML = '';
+            msgs.forEach(msg => { body.innerHTML += `<tr><td>${msg.from_name}</td><td>${msg.to_name}</td><td>${msg.message.substring(0, 100)}${msg.message.length > 100 ? '...' : ''}</td><td>${msg.created_at}</td></tr>`; });
+            
+            const recentDiv = document.getElementById('recentActivity');
+            recentDiv.innerHTML = '<ul style="list-style: none;">';
+            msgs.slice(0, 5).forEach(msg => {
+                recentDiv.innerHTML += `<li style="margin-bottom: 8px;"><i class="fas fa-envelope" style="color: #667eea;"></i> ${msg.from_name} → ${msg.to_name}</li>`;
+            });
+            recentDiv.innerHTML += '</ul>';
+        }
+        
+        loadUsers(); loadApplications(); loadPayments(); loadMessages();
+    </script>
+</body>
+</html>
+"""

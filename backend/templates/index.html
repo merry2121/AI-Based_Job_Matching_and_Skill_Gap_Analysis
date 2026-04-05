@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Job Matching Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+      body {
+    font-family: 'Inter', sans-serif;
+    background: white;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+        }
+        .left {
+            flex: 1;
+            padding: 60px 40px;
+            background: linear-gradient(145deg, #ffffff 0%, #f9f9f9 100%);
+        }
+        .right {
+            flex: 1;
+            background: linear-gradient(135deg, #2b3a67 0%, #1b2a4e 100%);
+            padding: 60px 40px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+        .left p {
+            font-size: 1.1rem;
+            color: #475569;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        .button-group {
+            display: flex;
+            gap: 16px;
+        }
+        .btn {
+            padding: 12px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 40px;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+        .btn-primary {
+            background: #1e293b;
+            color: white;
+            border: 1px solid #1e293b;
+        }
+        .btn-primary:hover {
+            background: #0f172a;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: #1e293b;
+            border: 1px solid #1e293b;
+        }
+        .btn-secondary:hover {
+            background: #f1f5f9;
+            transform: translateY(-2px);
+        }
+        .right h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .feature span {
+            font-size: 1rem;
+            font-weight: 400;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .left, .right {
+                padding: 40px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <h1>AI‑Powered Job Matching & Skill Gap Analysis</h1>
+            <p>Intelligent career guidance for job seekers and smarter recruitment for employers.</p>
+            <div class="button-group">
+                <a href="/login" class="btn btn-primary">Sign In</a>
+                <a href="/register" class="btn btn-secondary">Create Account</a>
+            </div>
+        </div>
+        <div class="right">
+            <h2>Why choose us?</h2>
+            <div class="feature">
+                <span>✓ Personalised job recommendations</span>
+            </div>
+            <div class="feature">
+                <span>✓ Identify skill gaps instantly</span>
+            </div>
+            <div class="feature">
+                <span>✓ Get tailored learning recommendations</span>
+            </div>
+            <div class="feature">
+                <span>✓ Rank candidates with AI accuracy</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
